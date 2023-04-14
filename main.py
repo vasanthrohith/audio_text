@@ -1,6 +1,7 @@
 # import time
 from tkinter import *
 from PIL import ImageTk, Image
+import PyPDF3
 import pyttsx3
 import speech_recognition as sr
 
@@ -178,12 +179,12 @@ stt_btn.place(x=685, y=520)
 
 win.mainloop()
 
-# Text to speech---------
+# # Text to speech---------
 # speaker=pyttsx3.init()
 # pdf=open('Speak to Win1.pdf','rb')
 # # inp = input("Enter your words : ")
 # pdf1=PyPDF3.PdfFileReader(pdf)
-
+#
 # pages=pdf1.numPages
 # print(pages)
 #
@@ -192,7 +193,7 @@ win.mainloop()
 #     words = pdf2.extractText()
 #     speaker.say(words)
 #     speaker.runAndWait()
-#
+
 #
 # # Speech to text-----
 #
