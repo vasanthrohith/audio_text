@@ -6,15 +6,16 @@ import pyttsx3
 import speech_recognition as sr
 
 win = Tk()
-win.geometry("500x500")
+win.geometry("1000x500")
+# win.state('zoomed')
 win.title("Inversor")
 frame1 = Frame(win)
 frame1.pack(ipadx=50, ipady=50, expand=True, fill='both')
 
-bg = ImageTk.PhotoImage(file='bg6.png')
-
 canvas = Canvas(frame1, width=700, height=3500)
 canvas.pack(fill=BOTH, expand=True)
+
+bg = ImageTk.PhotoImage(file='bg6.png')
 canvas.create_image(0, 0, image=bg, anchor='nw')
 
 
@@ -28,30 +29,52 @@ def resize_image(e):
     image2 = ImageTk.PhotoImage(resized)
     canvas.create_image(0, 0, image=image2, anchor='nw')
 
-    canvas.create_text(760, 340, text="Name", font=('Helvetica 28 bold'), fill='red')
+    canvas.create_text(760, 290, text="Name", font=('Helvetica 28 bold'), fill='red')
+    canvas.pack()
+
+    canvas.create_text(760, 380, text="Gender", font=('Helvetica 26 bold'), fill='red')
     canvas.pack()
     # canvas.create_text(600, 460, text="text ▶ Voice", font=('Helvetica 28 bold'), fill='red')
     # canvas.pack()
+
 
 win.bind("<Configure>", resize_image)
 
 
 def tts_fn():
+    # -----welcome speech--
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')
     engine.setProperty('voice', voices[1].id)
     engine.say(f'Hai {name_e.get()}, how are you doing?')
     engine.runAndWait()
+    # ------------------------
+
+    print(gender_fn())
+    gender = gender_fn()
+
 
     def speak_fn():
+        if gender == 'f':
+            print("female")
+            text = txt_en.get(1.0, "end-1c")
+            print(text)
+            engine = pyttsx3.init()
+            # voices = engine.getProperty('voices')
+            # engine.setProperty('voice', voices[1].id)
+            engine.say(text)
+            engine.runAndWait()
+        else:
+            print("male")
+            text = txt_en.get(1.0, "end-1c")
+            print(text)
+            engine = pyttsx3.init()
+            voices = engine.getProperty('voices')
+            engine.setProperty('voice', voices[1].id)
+            engine.say(text)
+            engine.runAndWait()
         # global photo
-        text = txt_en.get(1.0, "end-1c")
-        print(text)
-        engine = pyttsx3.init()
-        voices = engine.getProperty('voices')
-        engine.setProperty('voice', voices[1].id)
-        engine.say(text)
-        engine.runAndWait()
+
 
     frame1.destroy()
     # frame4 = Frame(win, bg='red')
@@ -84,30 +107,31 @@ def tts_fn():
     img_l.image = img2
     # btn = Button(frame2, text='check', command=ing)
     # btn.place(x=300, y=670)
-    img_l.pack(ipady=5,pady=10)
+    img_l.pack(ipady=5, pady=10)
     # img_l.place(x=520, y=15)
     # img_l.bind('<Configure>', ing)
 
     # -------Images
 
     # Entry
-    sb_ver_f2 = Scrollbar(frame2,orient=VERTICAL)
-    txt_en = Text(frame2, width=40, height=4,font='12',yscrollcommand=sb_ver_f2.set)
+    sb_ver_f2 = Scrollbar(frame2, orient=VERTICAL)
+    txt_en = Text(frame2, width=40, height=4, font='12', yscrollcommand=sb_ver_f2.set)
     txt_en.place(x=540, y=400)
     sb_ver_f2.place(x=980, y=400, height=96)
     sb_ver_f2.config(command=txt_en.yview())
 
-
     speak_btn = Button(frame2, text="Speak", font='Helvetica 16 bold', borderwidth=5, command=speak_fn)
     speak_btn.place(x=730, y=520)
 
-    rf_btn = Button(frame2, text='🔁', font=24)
-    rf_btn.place(x=953, y=359)
+    # rf_btn = Button(frame2, text='🔁', font=24)
+    # rf_btn.place(x=953, y=359)
 
     # back_btn=Button(frame2,text='⬅',font=24,bg='black',fg='red',borderwidth=5,command=back_fn)
     # back_btn.place(x=2,y=2)
 
     # ing()
+
+
 def stt_fn():
     def refresh_fn():
         text_area.delete('1.0', END)
@@ -139,17 +163,16 @@ def stt_fn():
                 engine.say('please connect to the network')
                 engine.runAndWait()
 
-    frame1.destroy()
+    frame1.destroy()  # destroying frame-1 to create new one
     frame3 = Frame(win, bg='black')
     frame3.pack(ipadx=50, ipady=50, expand=True, fill='both')
 
-
     f3_l1 = Label(frame3, text="I'm listening...", font='Helvetica 20 bold', fg='red', bg='black')
     f3_l1.place(x=680, y=290)
-    sb_ver = Scrollbar(frame3,orient=VERTICAL)
-    text_area = Text(frame3, width=30, height=4,font='12',yscrollcommand=sb_ver.set)
+    sb_ver = Scrollbar(frame3, orient=VERTICAL)
+    text_area = Text(frame3, width=30, height=4, font='12', yscrollcommand=sb_ver.set)
     text_area.place(x=610, y=400)
-    sb_ver.place(x=940,y=400,height=96)
+    sb_ver.place(x=940, y=400, height=96)
     sb_ver.config(command=text_area.yview)
 
     listen_btn = Button(frame3, text='Start', font='Helvetica 16 bold', borderwidth=5, command=listen_fn)
@@ -168,14 +191,30 @@ def stt_fn():
 # Frame1------Labels
 name_en = StringVar()
 name_e = Entry(frame1, width=30, textvariable=name_en)
-name_e.place(x=670, y=370)
+name_e.place(x=670, y=320)
 
 # Buttons----
 tts_btn = Button(frame1, text='Text ► Voice', font='Helvetica 16 bold', borderwidth=5, command=tts_fn)
-tts_btn.place(x=685, y=450)
+tts_btn.place(x=685, y=500)
 
 stt_btn = Button(frame1, text='Voice ► Text', font='Helvetica 16 bold', borderwidth=5, command=stt_fn)
-stt_btn.place(x=685, y=520)
+stt_btn.place(x=685, y=570)
+
+
+def gender_fn():
+    gender = gen.get()
+    print(gender)
+    return gender
+
+
+gen = StringVar()
+gd_m = Radiobutton(win, text='Male', value='m', command=gender_fn, variable=gen, font='Helvetica 20 bold', fg='red',
+                   bg='black')
+gd_m.place(x=630, y=420)
+
+gd_fm = Radiobutton(win, text='Female', value='f', command=gender_fn, variable=gen, font='Helvetica 20 bold', fg='red',
+                    bg='black')
+gd_fm.place(x=750, y=420)
 
 win.mainloop()
 
